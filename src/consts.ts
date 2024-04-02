@@ -3,6 +3,17 @@
 export const SITE_TITLE = 'Astro Blog';
 export const SITE_DESCRIPTION = 'Welcome to my website!';
 
+// 吊顶提示文案
+export const TOPBAR = `云原生开源沙龙北京站开启报名，详情请<a style="color: inherit; display: inline" href="https://nacos.io/blog/nacos-gvr7dx_awbbpb_sozg59av10r22awa/?source=activity_activity-preview">点击</a>了解。`
+
+// 文档根据版本区分的提示banner
+export const DOCS_BANNER = {
+    latest: '',
+    next:'',
+    v1: '',
+    v2:'',
+}
+
 export const i18nMap = {
     "blog": {
         article: 'blog.article.technical',
@@ -104,8 +115,8 @@ export const ACTIVITY_CATEGORY = [
 export const HEADER_ACTIVITY_CARD = [
     {
         "collection": "blog",
-        "slug": "ecosystem-nacos-controller-opensource",
-        "description": "Nacos Controller 项目开源，支持与 Kubernetes 互通配置",
+        "slug": "nacos-gvr7dx_awbbpb_sozg59av10r22awa",
+        "description": "云原生开源沙龙北京站开启报名",
         "imageUrl": "https://img.alicdn.com/imgextra/i4/O1CN01bGnAVW1pFeLFnlaQL_!!6000000005331-2-tps-508-370.png"
     },
     {

@@ -1,9 +1,10 @@
 ---
 import { useTranslations } from "@i18n/util";
-import Navbar from '@components/common/Navbar.astro';
+import Navbar from "@components/common/Navbar.astro";
 import LanguageToggle from "@components/common/LanguageToggle.astro";
-import MobileNavbar from '@components/common/MobileNavbar.astro';
-import SearchComp from './searchComp/index.astro'
+import MobileNavbar from "@components/common/MobileNavbar.astro";
+import SearchComp from "./searchComp/index.astro";
+import Alert from "./Alert.astro";
 
 interface Props {
   align?: "home" | "docs";
@@ -14,7 +15,9 @@ interface Props {
 const t = useTranslations(Astro);
 const { align = "home", position = "sticky", lang } = Astro.props;
 
-let height, width, xpadding = "";
+let height,
+  width,
+  xpadding = "";
 (() => {
   switch (align) {
     case "home":
@@ -28,126 +31,162 @@ let height, width, xpadding = "";
       xpadding = "1.5rem";
       return;
   }
-})()
-
+})();
 ---
 
-<my-layout
+<span
+  class="header-wrapper top-0 z-[10]"
   style={`position: ${position}; height: ${height}`}
-  class=" backdrop-blur-md top-0 z-[10] bg-gray-14 flex justify-center"
 >
-  <!-- 方便控制header宽度 -->
-  <div class="header-content flex items-center justify-between">
+  <Alert />
+  <my-layout
+    style={` height: ${height}`}
+    class="w-full backdrop-blur-md top-0 z-[10] bg-gray-14 flex justify-center"
+  >
+    <!-- 方便控制header宽度 -->
+    <div class="header-content flex items-center justify-between">
+      <div class="left-content h-full flex items-center">
+        <a class="no-underline" href="/">
+          <img
+            class="logo"
+            src="https://img.alicdn.com/imgextra/i4/O1CN01rW3vAB1FDWKSOiFf0_!!6000000000453-2-tps-204-40.png"
+            alt="nacos-log"
+          />
+        </a>
+        <MobileNavbar top={height} class="mobile-navbar h-full ml-4" />
+      </div>
 
-    <div class="left-content h-full flex items-center">
-      <a class="no-underline" href="/">
-        <img
-          class="logo"
-          src="https://img.alicdn.com/imgextra/i4/O1CN01rW3vAB1FDWKSOiFf0_!!6000000000453-2-tps-204-40.png"
-          alt="nacos-log"
-        />
-      </a>
-      <MobileNavbar top={height} class="mobile-navbar h-full ml-4" />
+      <div class="center-content h-full">
+        <Navbar top={height} class="pc-navbar h-full" />
+      </div>
+
+      <div class="right-content flex items-center md:gap-4">
+        <LanguageToggle id="pc-toggle" size="small" lang={lang.toLowerCase()} />
+        <SearchComp />
+      </div>
     </div>
+  </my-layout>
+</span>
 
-    <div class="center-content h-full">
-      <Navbar top={height} class='pc-navbar h-full'/>
-    </div>
+<script>
+  // animation
+  let script = document.createElement("script");
+  script.src =
+    "https://g.alicdn.com/cm-design/mw-vendor/1.6.12/web-animations-next.min.js?spm=defwork.home.0.0.413a5c4bEOqptl&file=web-animations-next.min.js";
+  script.onload = function () {
+    if (!document.getAnimations) {
+      document.getAnimations = window.Element.prototype.getAnimations;
+    }
+  };
+  document.head.appendChild(script);
+</script>
 
-    <div class="right-content flex items-center md:gap-4">
-      <LanguageToggle id="pc-toggle" size="small" lang={lang.toLowerCase()} />
-      <SearchComp /> 
-    </div>
-
-  </div>
-  
-</my-layout>
-
-
+<script>
+  //cnpilot
+  const copilotJSScript = document.createElement("script");
+  copilotJSScript.type = "text/javascript";
+  copilotJSScript.src =
+    "//g.alicdn.com/cm-design/copilot-booter/0.0.21/copilot-booter.js";
+  copilotJSScript.addEventListener("load", function () {
+    if (window.CNPilot) {
+      window.CNPilot.mounted({
+        CNPilot_NODE_ENV: "development",
+        CNPilot_OPEN_SOURCE: ["nacos.io"],
+        CNPilot_OPEN_SOURCE_API: "https://ai.nacos.io",
+        showFloatICON: true,
+        globalStyle: {
+          top: "64px",
+        },
+        headerProps: {
+          closeIcon: { show: true }, // 关闭按钮
+        },
+      });
+    }
+  });
+  document.body.append(copilotJSScript);
+</script>
 
 <script>
   class HeaderLayout2 extends HTMLElement {
     private ifscroll: boolean;
     constructor() {
-        super();
-        this.ifscroll = false;
-        window.addEventListener("scroll", this.handleScroll)
+      super();
+      this.ifscroll = false;
+      window.addEventListener("scroll", this.handleScroll);
     }
 
     handleScroll = () => {
       if (window.innerWidth <= 800) return;
       if (window.scrollY >= 100 && !this.ifscroll) {
         this.ifscroll = true;
-        this.classList.add('bg-gray-14/[0.84]');
+        this.classList.add("bg-gray-14/[0.84]");
       }
-      if (window.scrollY <= 100 && this.ifscroll) { 
+      if (window.scrollY <= 100 && this.ifscroll) {
         this.ifscroll = false;
-        this.classList.remove('bg-gray-14/[0.84]');
+        this.classList.remove("bg-gray-14/[0.84]");
       }
-    }
-
+    };
   }
   customElements.define("my-layout", HeaderLayout2);
-
 </script>
 
-<style define:vars={{ width, height, xpadding }}>
-  my-layout {
-    --header-content-width: var(--width);
-    --logo-width: 96px;
-    --header-height: var(--height);
-    --header-xl-padding: var(--xpadding);
-  }
-
-  .header-content {
-    width: var(--header-content-width);
-    padding-left: var(--header-xl-padding);
-    padding-right: var(--header-xl-padding);
-  }
-
-  .left-content .logo {
-    vertical-align: sub;
-    width: var(--logo-width);
-  }
-
-  .left-content .mobile-navbar {
-    display: none;
-  }
-
-  @media (max-width: 85.125rem) {
-    /* 在这里编写屏幕宽度小于85.125rem的CSS样式 */
-    .header-content {
-      width: 100%;
-      padding-left: 1.5rem;
-      padding-right: 1.5rem;
+<style define:vars={{ width, height, xpadding }} is:global>
+  .header-wrapper {
+    my-layout {
+      --header-content-width: var(--width);
+      --logo-width: 96px;
+      --header-height: var(--height);
+      --header-xl-padding: var(--xpadding);
     }
-  }
 
-  @media (max-width: 50rem) { 
-    /** header 特殊处理 屏幕小于 800px 就显示不完全 */
     .header-content {
-      width: 100%;
-      padding-left: 1.5rem;
-      padding-right: 1.5rem;
+      width: var(--header-content-width);
+      padding-left: var(--header-xl-padding);
+      padding-right: var(--header-xl-padding);
     }
+
+    .left-content .logo {
+      vertical-align: sub;
+      width: var(--logo-width);
+    }
+
     .left-content .mobile-navbar {
-      display: block;
-    }
-    .center-content {
       display: none;
     }
-    .code-toggle {
-      padding: 0 !important;
-      background-color: transparent !important;
-      span {
+
+    @media (max-width: 85.125rem) {
+      /* 在这里编写屏幕宽度小于85.125rem的CSS样式 */
+      .header-content {
+        width: 100%;
+        padding-left: 1.5rem;
+        padding-right: 1.5rem;
+      }
+    }
+
+    @media (max-width: 50rem) {
+      /** header 特殊处理 屏幕小于 800px 就显示不完全 */
+      .header-content {
+        width: 100%;
+        padding-left: 1.5rem;
+        padding-right: 1.5rem;
+      }
+      .left-content .mobile-navbar {
+        display: block;
+      }
+      .center-content {
         display: none;
       }
-      svg {
-        width: 1.5rem;
-        height: 1.5rem;
+      .code-toggle {
+        padding: 0 !important;
+        background-color: transparent !important;
+        span {
+          display: none;
+        }
+        svg {
+          width: 1.5rem;
+          height: 1.5rem;
+        }
       }
     }
   }
-
 </style>
-

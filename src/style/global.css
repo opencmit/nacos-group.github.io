@@ -214,6 +214,18 @@
 	}
 }
 
+.sl-markdown-content img,
+.sl-markdown-content picture,
+.sl-markdown-content video,
+.sl-markdown-content canvas,
+.sl-markdown-content svg,
+.sl-markdown-content iframe
+ {
+	display: block;
+	max-width: 100%;
+	height: auto;
+}
+
 @tailwind components;
 @tailwind utilities;
 
@@ -274,4 +286,9 @@ starlight-menu-button button{
 	.dropdown{
 		display: block;
 	}
+}
+
+#copilot-booter .content_wrapper {
+	height: 100vh !important;
+	top: 0 !important;
 }
